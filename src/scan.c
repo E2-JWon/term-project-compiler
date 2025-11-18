@@ -8,15 +8,23 @@
 #include "scan.h"
 #include <string.h>
 
- /* DFA states */
-typedef enum {
-    START, INNUM, INID,
-    INLT, INGT, INEQ, INNEQ,
-    INDIV, INCOMM, OUTCOMM,
+/* DFA states */
+typedef enum
+{
+    START,
+    INNUM,
+    INID,
+    INLT,
+    INGT,
+    INEQ,
+    INNEQ,
+    INDIV,
+    INCOMM,
+    OUTCOMM,
     DONE
 } StateType;
 
-/* lexeme of identifier or reserved word */ 
+/* lexeme of identifier or reserved word */
 char tokenString[MAXTOKENLEN + 1];
 
 #define BUFLEN 256
@@ -26,17 +34,21 @@ static int bufsize = 0;
 
 static int getNextChar(void)
 {
-    if (!(linepos < bufsize)) {
+    if (!(linepos < bufsize))
+    {
         lineno++;
-        if (fgets(lineBuf, BUFLEN - 1, source)) {
+        if (fgets(lineBuf, BUFLEN - 1, source))
+        {
             if (EchoSource)
                 fprintf(listing, "%4d: %s", lineno, lineBuf);
             bufsize = strlen(lineBuf);
             linepos = 0;
             return (unsigned char)lineBuf[linepos++];
-        } else
+        }
+        else
             return EOF;
-    } else
+    }
+    else
         return (unsigned char)lineBuf[linepos++];
 }
 
@@ -47,13 +59,12 @@ static void ungetNextChar(void)
 }
 
 /* reserved words table */
-static struct {
+static struct
+{
     const char *str;
     TokenType tok;
 } reservedWords[MAXRESERVED] = {
-    {"else", ELSE}, {"if", IF}, {"int", INT},
-    {"return", RETURN}, {"void", VOID}, {"while", WHILE}
-};
+    {"else", ELSE}, {"if", IF}, {"int", INT}, {"return", RETURN}, {"void", VOID}, {"while", WHILE}};
 
 static TokenType reservedLookup(char *s)
 {
@@ -71,21 +82,25 @@ TokenType getToken(void)
     StateType state = START;
     int save; // 문자인지 숫자인지 구별할 변수
 
-    while (state != DONE) {
+    while (state != DONE)
+    {
         int c = getNextChar();
         save = TRUE;
 
-        switch (state) {
+        switch (state)
+        {
         case START:
-            if (c == EOF) {
+            if (c == EOF)
+            {
                 state = DONE;
                 save = FALSE;
                 currentToken = ENDFILE;
-            } else if (isdigit(c))
+            }
+            else if (isdigit(c))
                 state = INNUM;
             else if (isalpha(c))
                 state = INID;
-            else if (c == '<')  
+            else if (c == '<')
                 state = INLT;
             else if (c == '>')
                 state = INGT;
@@ -97,27 +112,54 @@ TokenType getToken(void)
                 state = INDIV;
             else if ((c == ' ') || (c == '\t') || (c == '\n'))
                 save = FALSE;
-            else {
+            else
+            {
                 state = DONE;
-                switch (c) {
-                case '+': currentToken = PLUS; break;
-                case '-': currentToken = MINUS; break;
-                case '*': currentToken = TIMES; break;
-                case ';': currentToken = SEMI; break;
-                case ',': currentToken = COMMA; break;
-                case '(': currentToken = LPAREN; break;
-                case ')': currentToken = RPAREN; break;
-                case '{': currentToken = LBRACE; break;
-                case '}': currentToken = RBRACE; break;
-                case '[': currentToken = LBRACKET; break;
-                case ']': currentToken = RBRACKET; break;
-                default: currentToken = ERROR; break;
+                switch (c)
+                {
+                case '+':
+                    currentToken = PLUS;
+                    break;
+                case '-':
+                    currentToken = MINUS;
+                    break;
+                case '*':
+                    currentToken = TIMES;
+                    break;
+                case ';':
+                    currentToken = SEMI;
+                    break;
+                case ',':
+                    currentToken = COMMA;
+                    break;
+                case '(':
+                    currentToken = LPAREN;
+                    break;
+                case ')':
+                    currentToken = RPAREN;
+                    break;
+                case '{':
+                    currentToken = LBRACE;
+                    break;
+                case '}':
+                    currentToken = RBRACE;
+                    break;
+                case '[':
+                    currentToken = LBRACKET;
+                    break;
+                case ']':
+                    currentToken = RBRACKET;
+                    break;
+                default:
+                    currentToken = ERROR;
+                    break;
                 }
             }
             break;
 
         case INNUM:
-            if (!isdigit(c)) {
+            if (!isdigit(c))
+            {
                 ungetNextChar();
                 save = FALSE;
                 state = DONE;
@@ -126,7 +168,8 @@ TokenType getToken(void)
             break;
 
         case INID:
-            if (!isalpha(c)) {
+            if (!isalpha(c) && !isdigit(c))
+            {
                 ungetNextChar();
                 save = FALSE;
                 state = DONE;
@@ -138,7 +181,8 @@ TokenType getToken(void)
             state = DONE;
             if (c == '=')
                 currentToken = EQ;
-            else {
+            else
+            {
                 ungetNextChar();
                 save = FALSE;
                 currentToken = ASSIGN;
@@ -149,10 +193,11 @@ TokenType getToken(void)
             state = DONE;
             if (c == '=')
                 currentToken = NEQ;
-            else {
+            else
+            {
                 ungetNextChar();
                 save = FALSE;
-                currentToken = ERROR; 
+                currentToken = ERROR;
             }
             break;
 
@@ -160,7 +205,8 @@ TokenType getToken(void)
             state = DONE;
             if (c == '=')
                 currentToken = LTE;
-            else {
+            else
+            {
                 ungetNextChar();
                 save = FALSE;
                 currentToken = LT;
@@ -171,7 +217,8 @@ TokenType getToken(void)
             state = DONE;
             if (c == '=')
                 currentToken = GTE;
-            else {
+            else
+            {
                 ungetNextChar();
                 save = FALSE;
                 currentToken = GT;
@@ -179,10 +226,14 @@ TokenType getToken(void)
             break;
 
         case INDIV: /* '/' 다음이 '*'이면 블록 주석 시작, 아니면 OVER */
-            if (c == '*') {
+            if (c == '*')
+            {
                 save = FALSE;
                 state = INCOMM;
-            } else {
+                tokenStringIndex = 0;
+            }
+            else
+            {
                 ungetNextChar();
                 state = DONE;
                 currentToken = OVER;
@@ -191,23 +242,27 @@ TokenType getToken(void)
 
         case INCOMM: /* 주석 내부: '*' 만나면 OUTCOMM로 */
             save = FALSE;
-            if (c == EOF) {
+            if (c == EOF)
+            {
                 state = DONE;
                 currentToken = ENDFILE;
-            } else if (c == '*') {
+            }
+            else if (c == '*')
+            {
                 state = OUTCOMM;
             } /* else remain in INCOMM */
             break;
 
-        case OUTCOMM: /* '*' 보고 '/' 대기 중 */
+        case OUTCOMM:
             save = FALSE;
-            if (c == '/') {
-                state = START; /* 주석 종료, 다음 토큰부터 시작 */
-            } else if (c == '*') {
-                /* 연속 '*'인 경우 계속 OUTCOMM 상태 유지 */
+            if (c == '/') { 
+                state = START;
+                continue;
+            }
+            else if (c == '*') {
                 state = OUTCOMM;
-            } else {
-                /* 다른 문자가 오면 다시 주석 내부로 돌아감 */
+            }
+            else {
                 state = INCOMM;
             }
             break;
@@ -222,14 +277,16 @@ TokenType getToken(void)
         if (save && (tokenStringIndex <= MAXTOKENLEN))
             tokenString[tokenStringIndex++] = (char)c;
 
-        if (state == DONE) {
+        if (state == DONE)
+        {
             tokenString[tokenStringIndex] = '\0';
             if (currentToken == ID)
                 currentToken = reservedLookup(tokenString);
         }
     }
 
-    if (TraceScan) {
+    if (TraceScan)
+    {
         fprintf(listing, "\t%d: ", lineno);
         printToken(currentToken, tokenString);
     }
