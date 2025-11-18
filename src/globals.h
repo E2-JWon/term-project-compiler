@@ -50,6 +50,7 @@ extern int lineno;
 /* trace flags */
 extern int EchoSource;
 extern int TraceScan;
+extern int TraceParse;
 extern int Error;
 
 #endif
