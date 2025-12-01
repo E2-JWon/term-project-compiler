@@ -1,14 +1,11 @@
 /****************************************************/
 /* File: globals.h                                  */
-/* Global types and vars for the C- scanner         */
+/* Global types and vars for the C- compiler        */
 /****************************************************/
 
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
 
-#include "parse.h"
-#include "symtab.h"
-#include "semantic.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -44,8 +41,8 @@ typedef enum {
 } TokenType;
 
 /* files */
-extern FILE *source;
-extern FILE *listing;
+extern FILE* source;
+extern FILE* listing;
 
 /* source line number for listing */
 extern int lineno;
