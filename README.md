@@ -70,26 +70,30 @@ compiler.exe
 
 ## 📌 2. C-Minus 프로그램을 Java 프로그램으로 변환
 
-예제 프로그램(test1.c)을 컴파일:
+예제 프로그램(test1.c, test2.c)을 컴파일:
 ```
 .\compiler test1.c
+.\compiler test2.c
 ```
 
 그러면 출력:
 ```
 Code generation finished. Output: test1_out.java
-
+Code generation finished. Output: test2_out.java
 ```
 test1_out.java 파일이 생성됩니다.
+test2_out.java 파일이 생성됩니다.
 
 ## 📌 3. 생성된 Java 코드 컴파일
 ```
 javac test1_out.java
+javac test2_out.java
 ```
 
 성공하면:
 ```
 test1_out.class
+test2_out.class
 ```
 
 파일이 생깁니다.
@@ -97,6 +101,7 @@ test1_out.class
 ## 📌 4. Java 실행
 ```
 java test1_out
+java test2_out
 ```
 ```
 예) 입력
