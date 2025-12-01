@@ -90,13 +90,14 @@ javac test1_out.java
 javac test2_out.java
 ```
 
-성공하면:
-```
-test1_out.class
-test2_out.class
-```
+### 성공하면:
 
-파일이 생깁니다.
+**test1_out.class**
+
+**test2_out.class**
+
+
+### 파일이 생깁니다.
 
 ## 📌 4. Java 실행
 ```
