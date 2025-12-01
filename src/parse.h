@@ -27,11 +27,11 @@ typedef struct treeNode {
     NodeKind nodekind;
     union {
         StmtKind stmt;
-        ExpKind exp; 
+        ExpKind exp;
         DeclKind decl;
     } kind;
     union {
-        TokenType op;
+        TokenType op; 
         int val;
         char* name;
     } attr;
