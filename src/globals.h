@@ -6,6 +6,9 @@
 #ifndef _GLOBALS_H_
 #define _GLOBALS_H_
 
+#include "parse.h"
+#include "symtab.h"
+#include "semantic.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
