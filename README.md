@@ -104,6 +104,10 @@ javac test2_out.java
 java test1_out
 java test2_out
 ```
+Test1 = 팩토리얼(factorial)
+
+Test2 = 최대공약수(GCD)
+
 ```
 예) 입력
 
