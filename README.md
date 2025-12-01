@@ -1,6 +1,6 @@
 ✅ README.md
 
-# 아래는 보고서 요구 사항 + 실행 방법 + 프로젝트 설명 모두 충족하는 README다.
+# 요구 사항 + 실행 방법 + 프로젝트 설명 README
 
 ## 📘 C-Minus Compiler (Scanner → Parser → Semantic Analyzer → Java Code Generator)
 
