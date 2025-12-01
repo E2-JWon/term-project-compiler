@@ -1,0 +1,21 @@
+# Windows exec / build files
+*.exe
+*.obj
+*.o
+
+# Java build artifacts
+*.class
+
+# generated source code
+*_out.c
+*_out.java
+
+# Visual Studio
+.vs/
+*.sln
+*.vcxproj
+*.ipch
+*.db
+
+# mac/Linux system files
+.DS_Store
